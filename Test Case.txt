@@ -1,0 +1,73 @@
+Drone
+
+/drone - normal datastream
+/drone/randomStatus -Random Health Status
+
+Drone Maintenace Log
+
+/drone/log - normal datastream
+/drone/log/randomEvent - Random Event Type
+/drone/log/randomPrevUpHealth - Random Chaning of Prev and Updated Health Status
+
+DockingStation
+
+/droneDock - normal datastream
+/droneDock/randomHealthStatus - Random Health Status
+
+DockingStation Maintenance Log
+
+/droneDockMainten/log - normal data stream
+/droneDockMainten/log/randomEventType - Random Event Type
+/droneDockMainten/log/randomPrevUpHealthStatus - Random Prev and Upodated Health Status
+
+Flight Drone Log
+
+/flight/drone/log - normal data stream
+/flight/drone/log/randomDroneStatus -Random Drone Status
+ 
+Flight Mission
+
+/flight/mission -normal data stream
+/flight/mission/randomDroneStatus -Random Drone Status
+/flight/mission/randomWeather -Random Weather on station
+/flight/mission/randomMissionStatus -Random Mission Status
+
+Flight Mission Log
+
+/flight/mission/log -normal datastream
+
+Flight Path
+
+/flight/path - normal data stream
+/flight/path/randomStatus -Random Flight Path Status
+
+Flight Path Log
+
+/flight/path/log -normal data stream
+
+Flight Schedule
+
+/flight/schedule - normal datastream
+
+Flight Video
+
+flight/video -normal data stream
+
+Image Sensor
+
+/imageSensor -normal datastream
+/imageSensor/randomHealthStatus -Random Health Status
+
+Image Sensor maintenance Log
+
+/imageSensor/log -normal data stream
+/imageSensor/log/randomEventType -Random Event Type
+/imageSensor/log/randomPrevUpHealthStatus -Random Prev and Updated Health Status
+
+LeakageInfo
+
+/leakage -normal data stream
+/leakage/randomLeakage -Random Leakage
+
+LeakageInfo Log
+/leakage/log -normal data stream
