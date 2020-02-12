@@ -1,11 +1,9 @@
 var mqtt = require("mqtt");
 var client = mqtt.connect("ws://broker.mqttdashboard.com:8000/mqtt");
-var leakButton = document.querySelector('#leak')
-var dockButton = document.querySelector('#dock')
-var flightButton = document.querySelector('#flight')
 
 
-leakButton.onClick=(e =>{
+
+
     client.on("connect", function() {
         console.log("MQTT Broadcasting LeakageInfo Log Data");
         let timer = setInterval(() => {
@@ -18,11 +16,7 @@ leakButton.onClick=(e =>{
             console.log("MQTT Broadcasting LeakageInfo Log Completed");
         }, 6000);
     });
-})
 
-dockButton.onClick = (e => {
-
-})
 
     client.on("connect", function() {
         console.log("MQTT Broadcasting DroneStation Log Data");
@@ -37,7 +31,6 @@ dockButton.onClick = (e => {
         }, 30000);
     });
 
-flightButton.onClick = (e =>{
     client.on("connect", function() {
         console.log("MQTT Broadcasting Flight Drone Log Data");
         let timer = setInterval(() => {
@@ -51,9 +44,6 @@ flightButton.onClick = (e =>{
         }, 74000);
     });
 
-})
-
-   
 
 
 
