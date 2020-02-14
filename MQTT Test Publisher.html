@@ -11,9 +11,13 @@
 <script src="https://unpkg.com/mqtt@2.12.0/dist/mqtt.min.js"></script>
 
 <body>
-    <h1>Test Case for Drone Project</h1>
-    <div style="padding: 2rem;">
-        <h2>Populating of Data via MQTT</h2>
+    <h1 class="display-2">Test Case for Drone Project</h1>
+    <div style="padding: 0.5rem;">
+        <h2 class="display-4"> MQTT Publisher DashBoard</h2>
+    </div>
+
+    <div style="padding: 1rem;">
+        <h2 class="display-4">Populating of Data via MQTT</h2>
         <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
             title="Provide Drone Data" id="drone">
             Drone
@@ -51,7 +55,7 @@
             Image Sensor
         </button>
         <br /><br />
-        <h2>Log Data</h2>
+        <h2 class="display-4">Log Data via MQTT</h2>
         <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Stream Drone Log"
             id="droneLog">
             Drone Maintenance Log
@@ -143,10 +147,10 @@
             }, 1000);
 
             setTimeout(() => {
-                clearInterval(timer);
                 counter = 0;
-                alert('MQTT Broadcasting Drone Completed');
                 console.log('MQTT Broadcasting Drone Completed');
+                clearInterval(timer);
+                alert('MQTT Broadcasting Drone Completed');
             }, 5000);
         };
 
