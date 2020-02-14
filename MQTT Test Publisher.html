@@ -2,540 +2,1188 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MQTT Publisher</title>
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
 </head>
 <script src="https://unpkg.com/mqtt@2.12.0/dist/mqtt.min.js"></script>
 
 <body>
-    <H1>Test Case</H1>
-    <button id="leak">Leakage Log </button>
-    <button id="dock"> Docking Station log</button>
-    <button id="flight"> Flight Drone Log</button>
+    <h1>Test Case for Drone Project</h1>
+    <div style="padding: 2rem;">
+        <h2>Populating of Data via MQTT</h2>
+        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+            title="Provide Drone Data" id="drone">
+            Drone
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+            title="Provide Leakage Data" id="leak">
+            Leakage
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+            title="Provide Docking Station Data" id="dock">
+            Docking Station
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+            title="Provide Flight Drone Data" id="flight">
+            Flight Drone
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+            title="Provide Flight Mission" id="flightMission">
+            Flight Mission
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+            title="Provide Flight Path Data" id="flightPath">
+            Flight Path
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+            title="Provide Flight Schedule Data" id="flightSchedule">
+            Flight Schedule
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+            title="Provide Flight Video Data" id="flightVideo">
+            Flight Video
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+            title="Provide Image Sensor Data" id="imageSensor">
+            Image Sensor
+        </button>
+        <br /><br />
+        <h2>Log Data</h2>
+        <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Stream Drone Log"
+            id="droneLog">
+            Drone Maintenance Log
+        </button>
+        <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
+            title="Stream Docking Station Log" id="dockLog">
+            Docking Station Maintenance Log
+        </button>
+        <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
+            title="Stream Flight Mission Log" id="flightMissionLog">
+            Flight Mission Log
+        </button>
+        <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Stream Leakage Log"
+            id="leakLog">
+            Leakage Log
+        </button>
+        <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
+            title="Stream Flight Path Log" id="flightPathLog">
+            Flight Path Log
+        </button>
+        <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
+            title="Stream Image Sensor Log" id="imageSensorLog">
+            Image Sensor Log
+        </button>
+    </div>
     <script>
+        var client = mqtt.connect(
+            'ws://broker.mqttdashboard.com:8000/mqtt'
+        );
+        var leakButton = document.querySelector('#leak');
+        var leakLogButton = document.querySelector('#leakLog');
+        var droneButton = document.querySelector('#drone');
+        var droneLogButton = document.querySelector('#droneLog');
+        var dockButton = document.querySelector('#dock');
+        var dockLogButton = document.querySelector('#dockLog');
+        var flightButton = document.querySelector('#flight');
+        var flightMissionButton = document.querySelector('#flightMission');
+        var flightMissionLogButton = document.querySelector(
+            '#flightMissionLog'
+        );
+        var flightPathButton = document.querySelector('#flightPath');
+        var flightPathLogButton = document.querySelector('#flightPathLog');
+        var flightScheduleButton = document.querySelector(
+            '#flightSchedule'
+        );
+        var flightVideoButton = document.querySelector('#flightVideo');
+        var imageSensorButton = document.querySelector('#imageSensor');
+        var imageSensorLogButton = document.querySelector(
+            '#imageSensorLog'
+        );
 
-        var client = mqtt.connect('ws://broker.mqttdashboard.com:8000/mqtt');
-        var leakButton = document.querySelector('#leak')
-        var dockButton = document.querySelector('#dock')
-        var flightButton = document.querySelector('#flight')
-
-        leakButton.onclick = (e => {
-            console.log("MQTT Broadcasting LeakageInfo Log Data");
+        leakButton.onclick = e => {
+            alert('MQTT Broadcasting LeakageInfo Log Data');
+            console.log('MQTT Broadcasting LeakageInfo Log Data');
             let timer = setInterval(() => {
-            client.publish("/leakage/log", JSON.stringify(leakage()));
-        }, 1000);
+                client.publish('/leakage', JSON.stringify(leakage()));
+            }, 1000);
 
-        setTimeout(() => {
-            clearInterval(timer);
-            leakCount = 0;
-            console.log("MQTT Broadcasting LeakageInfo Log Completed");
-        }, 5000);
-        })
+            setTimeout(() => {
+                clearInterval(timer);
+                leakCount = 0;
+                alert('MQTT Broadcasting LeakageInfo Log Completed');
+                console.log('MQTT Broadcasting LeakageInfo Log Completed');
+            }, 5000);
+        };
 
+        leakLogButton.onclick = e => {
+            alert('MQTT Broadcasting LeakageInfo Log Data');
+            console.log('MQTT Broadcasting LeakageInfo Log Data');
+            let timer = setInterval(() => {
+                client.publish(
+                    '/leakage/log',
+                    JSON.stringify(leakageLog())
+                );
+            }, 1000);
 
-        dockButton.onclick = (e => {
-            console.log("MQTT Broadcasting DroneStation Log Data");
-        let timer = setInterval(() => {
-            client.publish("/dockingStation", JSON.stringify(dronestation()));
-        }, 5000);
+            setTimeout(() => {
+                clearInterval(timer);
+                alert('MQTT Broadcasting LeakageInfo Log Completed');
+                console.log('MQTT Broadcasting LeakageInfo Log Completed');
+            }, 5000);
+        };
 
-        setTimeout(() => {
-            clearInterval(timer);
-            counter = 0;
-            console.log("MQTT Broadcasting DoneStation Completed");
-        }, 25000);
-        })
+        droneButton.onclick = e => {
+            alert('MQTT Broadcasting Drone Data');
+            console.log('MQTT Broadcasting Drone Data');
+            let timer = setInterval(() => {
+                client.publish('/drone', JSON.stringify(drone()));
+            }, 1000);
 
-        flightButton.onclick = (e => {
-            console.log("MQTT Broadcasting Flight Drone Log Data");
-        let timer = setInterval(() => {
-            client.publish("/droneLog", JSON.stringify(FlightDroneLog()));
-        }, 1000);
+            setTimeout(() => {
+                clearInterval(timer);
+                counter = 0;
+                alert('MQTT Broadcasting Drone Completed');
+                console.log('MQTT Broadcasting Drone Completed');
+            }, 5000);
+        };
 
-        setTimeout(() => {
-            clearInterval(timer);
-            droneCounter = 0;
-            console.log("MQTT Broadcasting Flight Drone Log Completed");
-        }, 73000);
-        })
+        droneLogButton.onclick = e => {
+            alert('MQTT Broadcasting Drone Maintenance Log Data');
+            console.log('MQTT Broadcasting Drone Maintenance Log Data');
+            let timer = setInterval(() => {
+                client.publish(
+                    '/drone/log',
+                    JSON.stringify(droneMainLog())
+                );
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                counter = 0;
+                alert('MQTT Broadcasting Drone Mainenance Log Completed');
+                console.log(
+                    'MQTT Broadcasting Drone Mainenance Log Completed'
+                );
+            }, 5000);
+        };
+
+        dockButton.onclick = e => {
+            alert('MQTT Broadcasting DroneStation Data');
+            console.log('MQTT Broadcasting DroneStation Data');
+            let timer = setInterval(() => {
+                client.publish(
+                    '/dockingStation',
+                    JSON.stringify(dronestation())
+                );
+            }, 5000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                counter = 0;
+                alert('MQTT Broadcasting DoneStation Completed');
+                console.log('MQTT Broadcasting DoneStation Completed');
+            }, 25000);
+        };
+
+        dockLogButton.onclick = e => {
+            alert('MQTT Broadcasting DroneStation Maintenance Log Data');
+            console.log(
+                'MQTT Broadcasting DroneStation Maintenance Log Data'
+            );
+            let timer = setInterval(() => {
+                client.publish(
+                    '/dockingStation/log',
+                    JSON.stringify(dronestationMainLog())
+                );
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                counter = 0;
+                alert(
+                    'MQTT Broadcasting DoneStation Maintenance Completed'
+                );
+                console.log(
+                    'MQTT Broadcasting DoneStation Maintenance Completed'
+                );
+            }, 5000);
+        };
+
+        flightButton.onclick = e => {
+            alert('MQTT Broadcasting Flight Drone Log Data');
+            console.log('MQTT Broadcasting Flight Drone Log Data');
+            let timer = setInterval(() => {
+                client.publish(
+                    '/flight/drone',
+                    JSON.stringify(FlightDroneLog())
+                );
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                droneCounter = 0;
+                alert('MQTT Broadcasting Flight Drone Log Completed');
+                console.log('MQTT Broadcasting Flight Drone Log Completed');
+            }, 73000);
+        };
+
+        flightMissionButton.onclick = e => {
+            alert('MQTT Broadcasting Flight Mission Data');
+            console.log('MQTT Broadcasting Flight Mission Data');
+            let timer = setInterval(() => {
+                client.publish(
+                    '/flight/mission',
+                    JSON.stringify(flightMission())
+                );
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                alert('MQTT Broadcasting Flight Mission Completed');
+                console.log('MQTT Broadcasting Flight Mission Completed');
+            }, 5000);
+        };
+
+        flightMissionLogButton.onclick = e => {
+            alert('MQTT Broadcasting Flight Mission Log Data');
+            console.log('MQTT Broadcasting Flight Mission Log Data');
+            let timer = setInterval(() => {
+                client.publish(
+                    '/flight/mission/log',
+                    JSON.stringify(flightMissionLog())
+                );
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                alert('MQTT Broadcasting Flight Mission Log Completed');
+                console.log(
+                    'MQTT Broadcasting Flight Mission Log Completed'
+                );
+            }, 4000);
+        };
+
+        flightPathButton.onclick = e => {
+            alert('MQTT Broadcasting Flight Path Data');
+            console.log('MQTT Broadcasting Flight Path Data');
+            let timer = setInterval(() => {
+                client.publish(
+                    '/flight/path',
+                    JSON.stringify(flightPath())
+                );
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                flightPathCount = 0;
+                alert('MQTT Broadcasting Flight Path Completed');
+                console.log('MQTT Broadcasting Flight Path Completed');
+            }, 5000);
+        };
+
+        flightPathLogButton.onclick = e => {
+            alert('MQTT Broadcasting Flight Path Log Data');
+            console.log('MQTT Broadcasting Flight Path Log Data');
+            let timer = setInterval(() => {
+                client.publish(
+                    '/flight/path/log',
+                    JSON.stringify(flightPathLog())
+                );
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                flightLogCount = 0;
+                alert('MQTT Broadcasting Flight Path Log Completed');
+                console.log('MQTT Broadcasting Flight Path Log Completed');
+            }, 4000);
+        };
+
+        flightScheduleButton.onclick = e => {
+            alert('MQTT Broadcasting Flight Schedule Data');
+            console.log('MQTT Broadcasting Flight Schedule Data');
+            let timer = setInterval(() => {
+                client.publish(
+                    '/flight/schedule',
+                    JSON.stringify(flightSchedule())
+                );
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                alert('MQTT Broadcasting Flight Schedule Completed');
+                console.log('MQTT Broadcasting Flight Schedule Completed');
+            }, 4000);
+        };
+
+        flightVideoButton.onclick = e => {
+            alert('MQTT Broadcasting Flight Video  Data');
+            console.log('MQTT Broadcasting Flight Video  Data');
+            let timer = setInterval(() => {
+                client.publish(
+                    '/flight/video',
+                    JSON.stringify(flightVideo())
+                );
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                alert('MQTT Broadcasting Flight Video Completed');
+                console.log('MQTT Broadcasting Flight Video Completed');
+            }, 4000);
+        };
+
+        imageSensorButton.onclick = e => {
+            alert('MQTT Broadcasting Image Sensor  Data');
+            console.log('MQTT Broadcasting Image Sensor  Data');
+            let timer = setInterval(() => {
+                client.publish(
+                    '/imageSensor',
+                    JSON.stringify(imageSensor())
+                );
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                alert('MQTT Broadcasting Image Sensor Completed');
+                console.log('MQTT Broadcasting Image Sensor Completed');
+            }, 4000);
+        };
+
+        imageSensorLogButton.onclick = e => {
+            alert('MQTT Broadcasting Image Sensor Maintenance Log Data');
+            console.log(
+                'MQTT Broadcasting Image Sensor Maintenance Log Data'
+            );
+            let timer = setInterval(() => {
+                client.publish(
+                    '/imageSensor/log',
+                    JSON.stringify(imageSensorMainLog())
+                );
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                alert(
+                    'MQTT Broadcasting Image Sensor Log Maintenance Completed'
+                );
+                console.log(
+                    'MQTT Broadcasting Image Sensor Log Maintenance Completed'
+                );
+            }, 4000);
+        };
+
+        function drone() {
+            const status = [
+                'GOOD_CONDITION',
+                'FAULT_CONDITION',
+                'CORRECTIVE_MAINTENANCE',
+                'PREVENTIVE_MAINTENANCE'
+            ];
+            data = {
+                description: ' This is Drone Description',
+                healthStatus: status[random()],
+                id: 1234,
+                imageSensorId: 9008,
+                lastCMDate: randomDate(new Date(2019, 0, 1), new Date()),
+                lastPMDate: randomDate(new Date(2019, 0, 3), new Date()),
+                name: 'The Dronenator',
+                nextPMDate: randomDate(new Date(2019, 0, 10), new Date())
+            };
+            return data;
+        }
+
+        function droneMainLog() {
+            const status = [
+                'GOOD_CONDITION',
+                'FAULT_CONDITION',
+                'CORRECTIVE_MAINTENANCE',
+                'PREVENTIVE_MAINTENANCE'
+            ];
+            const eventType = [
+                'HEALTH_STATUS_CHANGED',
+                'NEXT_PM_DATE_CHANGED'
+            ];
+            data = {
+                droneId: 1234,
+                description: ' THis is drone maintenace Log description',
+                eventDateTime: new Date().toLocaleString('en-GB'),
+                eventType: eventType[random2()],
+                id: random(),
+                previousHealthStatus: status[random()],
+                previousNextPMDate: randomDate(
+                    new Date(2019, 0, 10),
+                    new Date()
+                ),
+                updatedHealthStatus: status[random()],
+                updatedNextPMDate: randomDate(
+                    new Date(2019, 0, 12),
+                    new Date()
+                )
+            };
+            return data;
+        }
 
         let counter = 0;
 
-function dronestation() {
-    const status = [
-        "GOOD_CONDITION",
-        "FAULT_CONDITION",
-        "CORRECTIVE_MAINTENANCE",
-        "PREVENTIVE_MAINTENANCE"
-    ];
-    const eventType = ["HEALTH_STATUS_CHANGED", "NEXT_PM_DATE_CHANGED"];
-    const dronestationId = [1, 2, 3, 4, 5];
-    const name = ["Dock 1", "Dock 2", "Dock 3", "Dock 4", "Dock 5"];
-    const description = [
-        "All Good",
-        "Warning",
-        "Dead Station",
-        "Repair Needed"
-    ];
-    const lat = [1.26726, 1.274877, 1.271749, 1.26778, 1.265999];
-    const lng = [103.678887, 103.676365, 103.672082, 103.671106, 103.677091];
-    const currentStatus = random();
-    let data = {
-        id: Number,
-        name: String,
-        description: String,
-        previousHealthStatus: String,
-        updatedHealthStatus: String,
-        eventDateTime: Number,
-        eventType: String,
-        previousNextPMDate: Number,
-        updatedNextPMDate: Number,
-        lat: Number,
-        lng: Number
-    };
+        function dronestation() {
+            const status = [
+                'GOOD_CONDITION',
+                'FAULT_CONDITION',
+                'CORRECTIVE_MAINTENANCE',
+                'PREVENTIVE_MAINTENANCE'
+            ];
+            const eventType = [
+                'HEALTH_STATUS_CHANGED',
+                'NEXT_PM_DATE_CHANGED'
+            ];
+            const dronestationId = [1, 2, 3, 4, 5];
+            const name = ['Dock 1', 'Dock 2', 'Dock 3', 'Dock 4', 'Dock 5'];
+            const description = [
+                'All Good',
+                'Warning',
+                'Dead Station',
+                'Repair Needed'
+            ];
+            const lat = [1.26726, 1.274877, 1.271749, 1.26778, 1.265999];
+            const lng = [
+                103.678887,
+                103.676365,
+                103.672082,
+                103.671106,
+                103.677091
+            ];
+            const currentStatus = random();
+            let data = {
+                id: Number,
+                name: String,
+                description: String,
+                previousHealthStatus: String,
+                updatedHealthStatus: String,
+                eventDateTime: Number,
+                eventType: String,
+                previousNextPMDate: Number,
+                updatedNextPMDate: Number,
+                lat: Number,
+                lng: Number
+            };
 
-    data.id = dronestationId[counter];
-    data.name = name[counter];
-    data.description = description[currentStatus];
-    data.previousHealthStatus = status[currentStatus];
-    data.updatedHealthStatus = status[currentStatus + 1];
-    (data.eventDateTime = new Date().toLocaleString()),
-        (data.eventType = eventType[random2()]);
-    data.previousNextPMDate = randomDate(new Date(2019, 0, 1), new Date());
-    data.updatedNextPMDate = randomDate(new Date(2019, 0, 9), new Date());
-    data.lat = lat[counter];
-    data.lng = lng[counter];
+            data.id = dronestationId[counter];
+            data.name = name[counter];
+            data.description = description[currentStatus];
+            data.previousHealthStatus = status[currentStatus];
+            data.updatedHealthStatus = status[currentStatus + 1];
+            (data.eventDateTime = new Date().toLocaleString('en-GB')),
+                (data.eventType = eventType[random2()]);
+            data.previousNextPMDate = randomDate(
+                new Date(2019, 0, 1),
+                new Date()
+            );
+            data.updatedNextPMDate = randomDate(
+                new Date(2019, 0, 9),
+                new Date()
+            );
+            data.lat = lat[counter];
+            data.lng = lng[counter];
 
-    counter++;
+            counter++;
 
-    if (counter == 5) {
-        counter = 0;
-    }
+            if (counter == 5) {
+                counter = 0;
+            }
 
-    return data;
-}
+            return data;
+        }
 
-let droneCounter = 0;
+        let stationMainCount = 0;
+        function dronestationMainLog() {
+            const status = [
+                'GOOD_CONDITION',
+                'FAULT_CONDITION',
+                'CORRECTIVE_MAINTENANCE',
+                'PREVENTIVE_MAINTENANCE'
+            ];
+            const dronestationId = [1, 2, 3, 4, 5];
+            const eventType = [
+                'HEALTH_STATUS_CHANGED',
+                'NEXT_PM_DATE_CHANGED'
+            ];
 
-function FlightDroneLog() {
-    const droneStatus = [
-        "OK",
-        "POOR_GPS",
-        "LOW_BATTERY",
-        "POOR_NETWORK",
-        "SYSTEM_ERROR"
-    ];
-    const gimbalPosition = ["Up", "Down", "Left", "Right"];
-    const flightMissionId = 1111;
-    const lat = [
-        1.26726,
-        1.267593,
-        1.268355,
-        1.268762,
-        1.269309,
-        1.269942,
-        1.270532,
-        1.271036,
-        1.271497,
-        1.272301,
-        1.272977,
-        1.273556,
-        1.274275,
-        1.274908,
-        1.275562,
-        1.276163,
-        1.276753,
-        1.277354,
-        1.277493,
-        1.277278,
-        1.276999,
-        1.276742,
-        1.276517,
-        1.276367,
-        1.276099,
-        1.275799,
-        1.275649,
-        1.275424,
-        1.275242,
-        1.274995,
-        1.274877,
-        1.27462,
-        1.274384,
-        1.274137,
-        1.273955,
-        1.27374,
-        1.273472,
-        1.273182,
-        1.27325,
-        1.273025,
-        1.272735,
-        1.272467,
-        1.272242,
-        1.271974,
-        1.271749,
-        1.271481,
-        1.271481,
-        1.270902,
-        1.270634,
-        1.27043,
-        1.270151,
-        1.269625,
-        1.269132,
-        1.268617,
-        1.268166,
-        1.26778,
-        1.266954,
-        1.266439,
-        1.266053,
-        1.265527,
-        1.265066,
-        1.264498,
-        1.264165,
-        1.26394,
-        1.264187,
-        1.264584,
-        1.264884,
-        1.265302,
-        1.265677,
-        1.265999,
-        1.266289,
-        1.26675,
-        1.26704
-    ];
-    const lng = [
-        103.678887,
-        103.679327,
-        103.680346,
-        103.680945,
-        103.681675,
-        103.68263,
-        103.683413,
-        103.6841,
-        103.684572,
-        103.684186,
-        103.683714,
-        103.68322,
-        103.682791,
-        103.682244,
-        103.681826,
-        103.681429,
-        103.681,
-        103.680571,
-        103.680002,
-        103.679745,
-        103.679423,
-        103.67908,
-        103.678704,
-        103.678479,
-        103.678114,
-        103.677706,
-        103.677459,
-        103.677191,
-        103.676869,
-        103.676569,
-        103.676365,
-        103.676032,
-        103.675742,
-        103.675442,
-        103.675142,
-        103.674842,
-        103.674499,
-        103.674134,
-        103.674152,
-        103.673841,
-        103.673455,
-        103.673047,
-        103.67279,
-        103.672468,
-        103.672082,
-        103.671717,
-        103.67146,
-        103.670934,
-        103.670548,
-        103.67028,
-        103.669926,
-        103.669808,
-        103.67013,
-        103.670538,
-        103.670838,
-        103.671106,
-        103.671685,
-        103.67205,
-        103.672361,
-        103.672672,
-        103.673058,
-        103.673412,
-        103.673712,
-        103.674227,
-        103.674688,
-        103.675182,
-        103.675568,
-        103.676158,
-        103.676662,
-        103.677091,
-        103.677563,
-        103.678132,
-        103.678572
-    ];
-    data = {
-        id: 1234,
-        flightMissionId: flightMissionId,
-        droneStatus: droneStatus[random()],
-        gimbalPosition: gimbalPosition[random()],
-        batteryLevel: randomBattery(),
-        altitude: randomAltitude(),
-        eventDateTime: new Date().toLocaleString(),
-        lat: lat[droneCounter],
-        lng: lng[droneCounter]
-    };
+            data = {
+                description: 'This is Drone Station Main Log',
+                dronestationId: dronestationId[random5()],
+                eventDateTime: new Date().toLocaleString('en-GB'),
+                eventType: eventType[random2()],
+                id: stationMainCount,
+                previousHealthStatus: status[random()],
+                previousNextPMDate: randomDate(
+                    new Date(2019, 0, 1),
+                    new Date()
+                ),
+                updatedHealthStatus: status[random()],
+                updatedNextPMDate: randomDate(
+                    new Date(2019, 0, 9),
+                    new Date()
+                )
+            };
+            stationMainCount++;
+            if (stationMainCount == 5) {
+                stationMainCount = 0;
+            }
 
-    droneCounter++;
+            return data;
+        }
 
-    if (droneCounter == 73) {
-        counter = 0;
-    }
-    return data;
-}
+        let droneCounter = 0;
 
-let leakCount = 0;
+        function FlightDroneLog() {
+            const droneStatus = [
+                'OK',
+                'POOR_GPS',
+                'LOW_BATTERY',
+                'POOR_NETWORK',
+                'SYSTEM_ERROR'
+            ];
+            const gimbalPosition = ['Up', 'Down', 'Left', 'Right'];
+            const flightMissionId = 1111;
+            const lat = [
+                1.26726,
+                1.267593,
+                1.268355,
+                1.268762,
+                1.269309,
+                1.269942,
+                1.270532,
+                1.271036,
+                1.271497,
+                1.272301,
+                1.272977,
+                1.273556,
+                1.274275,
+                1.274908,
+                1.275562,
+                1.276163,
+                1.276753,
+                1.277354,
+                1.277493,
+                1.277278,
+                1.276999,
+                1.276742,
+                1.276517,
+                1.276367,
+                1.276099,
+                1.275799,
+                1.275649,
+                1.275424,
+                1.275242,
+                1.274995,
+                1.274877,
+                1.27462,
+                1.274384,
+                1.274137,
+                1.273955,
+                1.27374,
+                1.273472,
+                1.273182,
+                1.27325,
+                1.273025,
+                1.272735,
+                1.272467,
+                1.272242,
+                1.271974,
+                1.271749,
+                1.271481,
+                1.271481,
+                1.270902,
+                1.270634,
+                1.27043,
+                1.270151,
+                1.269625,
+                1.269132,
+                1.268617,
+                1.268166,
+                1.26778,
+                1.266954,
+                1.266439,
+                1.266053,
+                1.265527,
+                1.265066,
+                1.264498,
+                1.264165,
+                1.26394,
+                1.264187,
+                1.264584,
+                1.264884,
+                1.265302,
+                1.265677,
+                1.265999,
+                1.266289,
+                1.26675,
+                1.26704
+            ];
+            const lng = [
+                103.678887,
+                103.679327,
+                103.680346,
+                103.680945,
+                103.681675,
+                103.68263,
+                103.683413,
+                103.6841,
+                103.684572,
+                103.684186,
+                103.683714,
+                103.68322,
+                103.682791,
+                103.682244,
+                103.681826,
+                103.681429,
+                103.681,
+                103.680571,
+                103.680002,
+                103.679745,
+                103.679423,
+                103.67908,
+                103.678704,
+                103.678479,
+                103.678114,
+                103.677706,
+                103.677459,
+                103.677191,
+                103.676869,
+                103.676569,
+                103.676365,
+                103.676032,
+                103.675742,
+                103.675442,
+                103.675142,
+                103.674842,
+                103.674499,
+                103.674134,
+                103.674152,
+                103.673841,
+                103.673455,
+                103.673047,
+                103.67279,
+                103.672468,
+                103.672082,
+                103.671717,
+                103.67146,
+                103.670934,
+                103.670548,
+                103.67028,
+                103.669926,
+                103.669808,
+                103.67013,
+                103.670538,
+                103.670838,
+                103.671106,
+                103.671685,
+                103.67205,
+                103.672361,
+                103.672672,
+                103.673058,
+                103.673412,
+                103.673712,
+                103.674227,
+                103.674688,
+                103.675182,
+                103.675568,
+                103.676158,
+                103.676662,
+                103.677091,
+                103.677563,
+                103.678132,
+                103.678572
+            ];
+            data = {
+                id: 1234,
+                flightMissionId: flightMissionId,
+                droneStatus: droneStatus[random()],
+                gimbalPosition: gimbalPosition[random()],
+                batteryLevel: randomBattery(),
+                altitude: randomAltitude(),
+                eventDateTime: new Date().toLocaleString('en-GB'),
+                lat: lat[droneCounter],
+                lng: lng[droneCounter]
+            };
 
-function leakage() {
-    const lat = [
-        1.26726,
-        1.267593,
-        1.268355,
-        1.268762,
-        1.269309,
-        1.269942,
-        1.270532,
-        1.271036,
-        1.271497,
-        1.272301,
-        1.272977,
-        1.273556,
-        1.274275,
-        1.274908,
-        1.275562,
-        1.276163,
-        1.276753,
-        1.277354,
-        1.277493,
-        1.277278,
-        1.276999,
-        1.276742,
-        1.276517,
-        1.276367,
-        1.276099,
-        1.275799,
-        1.275649,
-        1.275424,
-        1.275242,
-        1.274995,
-        1.274877,
-        1.27462,
-        1.274384,
-        1.274137,
-        1.273955,
-        1.27374,
-        1.273472,
-        1.273182,
-        1.27325,
-        1.273025,
-        1.272735,
-        1.272467,
-        1.272242,
-        1.271974,
-        1.271749,
-        1.271481,
-        1.271481,
-        1.270902,
-        1.270634,
-        1.27043,
-        1.270151,
-        1.269625,
-        1.269132,
-        1.268617,
-        1.268166,
-        1.26778,
-        1.266954,
-        1.266439,
-        1.266053,
-        1.265527,
-        1.265066,
-        1.264498,
-        1.264165,
-        1.26394,
-        1.264187,
-        1.264584,
-        1.264884,
-        1.265302,
-        1.265677,
-        1.265999,
-        1.266289,
-        1.26675,
-        1.26704
-    ];
-    const lng = [
-        103.678887,
-        103.679327,
-        103.680346,
-        103.680945,
-        103.681675,
-        103.68263,
-        103.683413,
-        103.6841,
-        103.684572,
-        103.684186,
-        103.683714,
-        103.68322,
-        103.682791,
-        103.682244,
-        103.681826,
-        103.681429,
-        103.681,
-        103.680571,
-        103.680002,
-        103.679745,
-        103.679423,
-        103.67908,
-        103.678704,
-        103.678479,
-        103.678114,
-        103.677706,
-        103.677459,
-        103.677191,
-        103.676869,
-        103.676569,
-        103.676365,
-        103.676032,
-        103.675742,
-        103.675442,
-        103.675142,
-        103.674842,
-        103.674499,
-        103.674134,
-        103.674152,
-        103.673841,
-        103.673455,
-        103.673047,
-        103.67279,
-        103.672468,
-        103.672082,
-        103.671717,
-        103.67146,
-        103.670934,
-        103.670548,
-        103.67028,
-        103.669926,
-        103.669808,
-        103.67013,
-        103.670538,
-        103.670838,
-        103.671106,
-        103.671685,
-        103.67205,
-        103.672361,
-        103.672672,
-        103.673058,
-        103.673412,
-        103.673712,
-        103.674227,
-        103.674688,
-        103.675182,
-        103.675568,
-        103.676158,
-        103.676662,
-        103.677091,
-        103.677563,
-        103.678132,
-        103.678572
-    ];
-    const status = [
-        "LEAKAGE_DETECTED",
-        "ALL_CLEAR",
-        "LEAKAGE_CONFIRMED",
-        "REPAIR_IN_PROGRESS",
-        "REPAIR_COMPLETED"
-    ];
-    const leakage = [1234, 1222, 7890, 6786, 5897];
-    const flightMissionId = 1111;
-    data = {
-        id: Number,
-        flightMissionId: Number,
-        leakageTime: Number,
-        altitude: Number,
-        leakageVideoClip: String,
-        status: String,
-        lat: Number,
-        lng: Number
-    };
-    const latlng = randomlatlng();
+            droneCounter++;
 
-    data.id = leakage[leakCount];
-    data.flightMissionId = flightMissionId;
-    data.leakageTime = randomDate(new Date(2019, 0, 1), new Date());
-    data.altitude = randomAltitude();
-    data.leakageVideoClip = "This is the VideoClip";
-    data.status = status[random5()];
-    data.lat = lat[latlng];
-    data.lng = lng[latlng];
-    leakCount++;
-    if (leakCount == 5) {
-        leakCount = 0;
-    }
+            if (droneCounter == 73) {
+                counter = 0;
+            }
+            return data;
+        }
 
-    return data;
-}
+        let leakCount = 0;
 
-function randomBattery() {
-    const random = Math.floor(Math.random() * 100);
-    return random;
-}
+        function leakage() {
+            const lat = [
+                1.26726,
+                1.267593,
+                1.268355,
+                1.268762,
+                1.269309,
+                1.269942,
+                1.270532,
+                1.271036,
+                1.271497,
+                1.272301,
+                1.272977,
+                1.273556,
+                1.274275,
+                1.274908,
+                1.275562,
+                1.276163,
+                1.276753,
+                1.277354,
+                1.277493,
+                1.277278,
+                1.276999,
+                1.276742,
+                1.276517,
+                1.276367,
+                1.276099,
+                1.275799,
+                1.275649,
+                1.275424,
+                1.275242,
+                1.274995,
+                1.274877,
+                1.27462,
+                1.274384,
+                1.274137,
+                1.273955,
+                1.27374,
+                1.273472,
+                1.273182,
+                1.27325,
+                1.273025,
+                1.272735,
+                1.272467,
+                1.272242,
+                1.271974,
+                1.271749,
+                1.271481,
+                1.271481,
+                1.270902,
+                1.270634,
+                1.27043,
+                1.270151,
+                1.269625,
+                1.269132,
+                1.268617,
+                1.268166,
+                1.26778,
+                1.266954,
+                1.266439,
+                1.266053,
+                1.265527,
+                1.265066,
+                1.264498,
+                1.264165,
+                1.26394,
+                1.264187,
+                1.264584,
+                1.264884,
+                1.265302,
+                1.265677,
+                1.265999,
+                1.266289,
+                1.26675,
+                1.26704
+            ];
+            const lng = [
+                103.678887,
+                103.679327,
+                103.680346,
+                103.680945,
+                103.681675,
+                103.68263,
+                103.683413,
+                103.6841,
+                103.684572,
+                103.684186,
+                103.683714,
+                103.68322,
+                103.682791,
+                103.682244,
+                103.681826,
+                103.681429,
+                103.681,
+                103.680571,
+                103.680002,
+                103.679745,
+                103.679423,
+                103.67908,
+                103.678704,
+                103.678479,
+                103.678114,
+                103.677706,
+                103.677459,
+                103.677191,
+                103.676869,
+                103.676569,
+                103.676365,
+                103.676032,
+                103.675742,
+                103.675442,
+                103.675142,
+                103.674842,
+                103.674499,
+                103.674134,
+                103.674152,
+                103.673841,
+                103.673455,
+                103.673047,
+                103.67279,
+                103.672468,
+                103.672082,
+                103.671717,
+                103.67146,
+                103.670934,
+                103.670548,
+                103.67028,
+                103.669926,
+                103.669808,
+                103.67013,
+                103.670538,
+                103.670838,
+                103.671106,
+                103.671685,
+                103.67205,
+                103.672361,
+                103.672672,
+                103.673058,
+                103.673412,
+                103.673712,
+                103.674227,
+                103.674688,
+                103.675182,
+                103.675568,
+                103.676158,
+                103.676662,
+                103.677091,
+                103.677563,
+                103.678132,
+                103.678572
+            ];
+            const status = [
+                'LEAKAGE_DETECTED',
+                'ALL_CLEAR',
+                'LEAKAGE_CONFIRMED',
+                'REPAIR_IN_PROGRESS',
+                'REPAIR_COMPLETED'
+            ];
+            const leakage = [1, 2, 3, 4, 5];
+            const flightMissionId = 1111;
+            data = {
+                id: Number,
+                flightMissionId: Number,
+                leakageTime: Number,
+                altitude: Number,
+                leakageVideoClip: String,
+                status: String,
+                lat: Number,
+                lng: Number
+            };
+            const latlng = randomlatlng();
 
-function randomBLeakage() {
-    const random = Math.floor(Math.random() * 5);
-    return random;
-}
+            data.id = leakage[leakCount];
+            data.flightMissionId = flightMissionId;
+            data.leakageTime = randomDate(new Date(2019, 0, 1), new Date());
+            data.altitude = randomAltitude();
+            data.leakageVideoClip = 'This is the VideoClip';
+            data.status = status[random5()];
+            data.lat = lat[latlng];
+            data.lng = lng[latlng];
+            leakCount++;
+            if (leakCount == 5) {
+                leakCount = 0;
+            }
 
-function random() {
-    const random = Math.floor(Math.random() * 4);
-    return random;
-}
+            return data;
+        }
 
-function random5() {
-    const random = Math.floor(Math.random() * 4);
-    return random;
-}
+        function leakageLog() {
+            data = {
+                description: ' This is leakage Log Description',
+                eventDateTime: new Date().toLocaleString('en-GB'),
+                id: random5(),
+                leakageinfoId: random5()
+            };
+            return data;
+        }
 
-function randomlatlng() {
-    const random = Math.floor(Math.random() * 73);
-    return random;
-}
+        function flightMission() {
+            const weather = ['NORMAL', 'RAIN', 'WIND'];
+            const droneStatus = [
+                'OK',
+                'POOR_GPS',
+                'LOW_BATTERY',
+                'POOR_NETWORK',
+                'SYSTEM_ERROR'
+            ];
+            const missionStatus = [
+                'PENDING',
+                'IN_PROGRESS',
+                'PAUSE',
+                'STOP',
+                'FAIL',
+                'SUCCESS'
+            ];
+            data = {
+                dockedDroneAtEndStnId: Number,
+                dockedDroneAtStartStmId: Number,
+                droneId: Number,
+                droneStatus: String,
+                endStationChargingOn: Boolean,
+                endStationPowerOn: Boolean,
+                endStationWeather: String,
+                endedOn: Number,
+                flightPathId: Number,
+                id: Number,
+                imageSensorId: Number,
+                missionStatus: String,
+                sopCheckPassed: Boolean,
+                startStationChargingOn: Boolean,
+                startStationPowerOn: Boolean,
+                startStationPowerOn: Boolean,
+                startStationWeather: String,
+                startOn: Number
+            };
 
-function randomAltitude() {
-    const random = Math.floor(Math.random() * 1000);
-    return random;
-}
+            data.dockedDroneAtEndStnId = 5;
+            data.dockedDroneAtStartStmId = 1;
+            data.droneId = 1234;
+            data.droneStatus = droneStatus[random()];
+            data.endStationChargingOn = randomBoolean();
+            data.endStationPowerOn = randomBoolean();
+            data.endStationWeather = weather[random3()];
+            endedOn = new Date().toLocaleString('en-GB');
+            data.flightPathId = 1111;
+            data.id = 1;
+            data.imageSensorId = 9008;
+            data.missionStatus = missionStatus[random6()];
+            data.sopCheckPassed = randomBoolean();
+            data.startStationChargingOn = randomBoolean();
+            data.startStationPowerOn = randomBoolean();
+            data.startStationWeather = weather[random3()];
+            data.startOn = new Date().toLocaleString('en-GB');
 
-function random2() {
-    const random = Math.floor(Math.random() * 2);
-    return random;
-}
+            return data;
+        }
 
-function randomDate(start, end) {
-    return new Date(
-        start.getTime() + Math.random() * (end.getTime() - start.getTime())
-    );
-}
+        function flightMissionLog() {
+            const data = {
+                description: 'This is a description',
+                eventDateTime: new Date().toLocaleString('en-GB'),
+                flightMissionId: 1111,
+                id: 4567
+            };
+            return data;
+        }
 
-function randomDate(start, end) {
-    return new Date(
-        start.getTime() + Math.random() * (end.getTime() - start.getTime())
-    );
-}
+        let flightPathCount = 0;
 
+        function flightPath() {
+            const status = ['NORMAL', 'LOCKED'];
+            const id = [1, 2, 3, 4, 5];
+            const stationId = [1, 2, 3, 4, 5, 1];
+            data = {
+                details: String,
+                fromeDroneStationId: Number,
+                id: Number,
+                lockEndOn: Number,
+                lockStartOn: Number,
+                status: String,
+                toDroneStationId: Number,
+                versionTimestamp: Number
+            };
+            data.details = 'This is a detail';
+            data.fromeDroneStationId = stationId[flightPathCount];
+            data.id = 1111;
+            data.lockEndOn = new Date().toLocaleString('en-GB');
+            data.lockStartOn = new Date().toLocaleString('en-GB');
+            data.status = status[random2()];
+            data.toDroneStationId = stationId[flightPathCount + 1];
+            data.versionTimestamp = new Date().toLocaleString('en-GB');
+
+            flightPathCount++;
+
+            if (flightPathCount == 5) {
+                flightMission = 0;
+            }
+
+            return data;
+        }
+
+        let flightLogCount = 0;
+
+        function flightPathLog() {
+            const id = [1, 2, 3, 4, 5];
+            const data = {
+                description: 'This is a description',
+                eventDateTime: new Date().toLocaleString('en-GB'),
+                flightPathId: 1111,
+                id: id[flightLogCount]
+            };
+            flightLogCount++;
+            if (flightLogCount == 5) {
+                flightLogCount = 0;
+            }
+
+            return data;
+        }
+
+        function flightSchedule() {
+            data = {
+                droneId: 1234,
+                flightDateTime: randomDate(
+                    new Date(2019, 0, 1),
+                    new Date()
+                ),
+                flightPathId: 1111,
+                id: random()
+            };
+            return data;
+        }
+
+        function flightVideo() {
+            data = {
+                flightMissionId: 1111,
+                id: randomlatlng(),
+                leakageCount: 5,
+                leakageDetected: randomBoolean(),
+                payloadViewVideo: ' This is Video payload',
+                pilotVideo: 'Pilot Video',
+                processedPayloadVideo: ' Processed Video',
+                rawPayloadVideo: ' Raw Video'
+            };
+            return data;
+        }
+
+        function imageSensor() {
+            const status = [
+                'GOOD_CONDITION',
+                'FAULT_CONDITION',
+                'CORRECTIVE_MAINTENANCE',
+                'PREVENTIVE_MAINTENANCE'
+            ];
+            const sensorType = [
+                'GAS_IMAGING_CAMERA',
+                'THERMAL_IMAGING_CAMERA'
+            ];
+            data = {
+                description: ' This is a description',
+                healthStatus: status[random()],
+                id: 9008,
+                name: 'RED HELIUM 8K S35',
+                nextPMDate: randomDate(new Date(2019, 0, 9), new Date()),
+                sensorType: sensorType[random2()]
+            };
+
+            return data;
+        }
+
+        function imageSensorMainLog() {
+            const status = [
+                'GOOD_CONDITION',
+                'FAULT_CONDITION',
+                'CORRECTIVE_MAINTENANCE',
+                'PREVENTIVE_MAINTENANCE'
+            ];
+            const eventType = [
+                'HEALTH_STATUS_CHANGED',
+                'NEXT_PM_DATE_CHANGED'
+            ];
+
+            data = {
+                description: ' This is a description',
+                eventDateTime: new Date().toLocaleString('en-GB'),
+                eventType: eventType[random2()],
+                id: 1,
+                imageSensorId: 9008,
+                previousHealthStatus: status[random()],
+                previousNextPMDate: randomDate(
+                    new Date(2019, 0, 1),
+                    new Date()
+                ),
+                updatedHealthStatus: status[random()],
+                updatedNextPMDate: randomDate(
+                    new Date(2019, 0, 9),
+                    new Date()
+                )
+            };
+
+            return data;
+        }
+
+        function randomBoolean() {
+            return (random_boolean = Math.random() >= 0.5);
+        }
+
+        function randomBattery() {
+            const random = Math.floor(Math.random() * 100);
+            return random;
+        }
+
+        function randomBLeakage() {
+            const random = Math.floor(Math.random() * 5);
+            return random;
+        }
+
+        function random() {
+            const random = Math.floor(Math.random() * 4);
+            return random;
+        }
+
+        function random3() {
+            const random = Math.floor(Math.random() * 3);
+            return random;
+        }
+        function random6() {
+            const random = Math.floor(Math.random() * 6);
+            return random;
+        }
+
+        function random5() {
+            const random = Math.floor(Math.random() * 4);
+            return random;
+        }
+
+        function randomlatlng() {
+            const random = Math.floor(Math.random() * 73);
+            return random;
+        }
+
+        function randomAltitude() {
+            const random = Math.floor(Math.random() * 1000);
+            return random;
+        }
+
+        function random2() {
+            const random = Math.floor(Math.random() * 2);
+            return random;
+        }
+
+        function randomDate(start, end) {
+            return new Date(
+                start.getTime() +
+                Math.random() * (end.getTime() - start.getTime())
+            );
+        }
+
+        function randomDate(start, end) {
+            return new Date(
+                start.getTime() +
+                Math.random() * (end.getTime() - start.getTime())
+            );
+        }
     </script>
 </body>
 
