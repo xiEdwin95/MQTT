@@ -13,7 +13,7 @@
 <body>
     <h1 class="display-2">Test Case for Drone Project</h1>
     <div style="padding: 0.5rem;">
-        <h2 class="display-4"> MQTT Publisher DashBoard</h2>
+        <h2 class="display-4">MQTT Publisher DashBoard</h2>
     </div>
 
     <div style="padding: 1rem;">
@@ -80,6 +80,26 @@
             title="Stream Image Sensor Log" id="imageSensorLog">
             Image Sensor Log
         </button>
+
+        <br><br>
+        <h3 class="display-4">Log Data via MQTT</h1>
+            <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Get All Drone"
+                id="alldrone">
+                Get All Drone
+            </button>
+            <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
+                title="Get All Leakage" id="allleak">
+                Get All Leakage
+            </button>
+            <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
+                title="Get All Flight Path" id="allFpath">
+                Get All Flight Path
+            </button>
+
+            <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
+                title="Get All Docking Station" id="allstation">
+                Get All Docking Station
+            </button>
     </div>
     <script>
         var client = mqtt.connect(
@@ -107,278 +127,11 @@
             '#imageSensorLog'
         );
 
-        leakButton.onclick = e => {
-            alert('MQTT Broadcasting LeakageInfo Log Data');
-            console.log('MQTT Broadcasting LeakageInfo Log Data');
-            let timer = setInterval(() => {
-                client.publish('/leakage', JSON.stringify(leakage()));
-            }, 1000);
+        var getAllDroneButton = document.querySelector('#alldrone');
+        var getAllLeakButton = document.querySelector('#allleak');
+        var getAllPathButton = document.querySelector('#allFpath');
+        var getAllstationButton = document.querySelector('#allstation');
 
-            setTimeout(() => {
-                clearInterval(timer);
-                leakCount = 0;
-                alert('MQTT Broadcasting LeakageInfo Log Completed');
-                console.log('MQTT Broadcasting LeakageInfo Log Completed');
-            }, 5000);
-        };
-
-        leakLogButton.onclick = e => {
-            alert('MQTT Broadcasting LeakageInfo Log Data');
-            console.log('MQTT Broadcasting LeakageInfo Log Data');
-            let timer = setInterval(() => {
-                client.publish(
-                    '/leakage/log',
-                    JSON.stringify(leakageLog())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                alert('MQTT Broadcasting LeakageInfo Log Completed');
-                console.log('MQTT Broadcasting LeakageInfo Log Completed');
-            }, 5000);
-        };
-
-        droneButton.onclick = e => {
-            alert('MQTT Broadcasting Drone Data');
-            console.log('MQTT Broadcasting Drone Data');
-            let timer = setInterval(() => {
-                client.publish('/drone', JSON.stringify(drone()));
-            }, 1000);
-
-            setTimeout(() => {
-                counter = 0;
-                console.log('MQTT Broadcasting Drone Completed');
-                clearInterval(timer);
-                alert('MQTT Broadcasting Drone Completed');
-            }, 5000);
-        };
-
-        droneLogButton.onclick = e => {
-            alert('MQTT Broadcasting Drone Maintenance Log Data');
-            console.log('MQTT Broadcasting Drone Maintenance Log Data');
-            let timer = setInterval(() => {
-                client.publish(
-                    '/drone/log',
-                    JSON.stringify(droneMainLog())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                counter = 0;
-                alert('MQTT Broadcasting Drone Mainenance Log Completed');
-                console.log(
-                    'MQTT Broadcasting Drone Mainenance Log Completed'
-                );
-            }, 5000);
-        };
-
-        dockButton.onclick = e => {
-            alert('MQTT Broadcasting DroneStation Data');
-            console.log('MQTT Broadcasting DroneStation Data');
-            let timer = setInterval(() => {
-                client.publish(
-                    '/dockingStation',
-                    JSON.stringify(dronestation())
-                );
-            }, 5000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                counter = 0;
-                alert('MQTT Broadcasting DoneStation Completed');
-                console.log('MQTT Broadcasting DoneStation Completed');
-            }, 25000);
-        };
-
-        dockLogButton.onclick = e => {
-            alert('MQTT Broadcasting DroneStation Maintenance Log Data');
-            console.log(
-                'MQTT Broadcasting DroneStation Maintenance Log Data'
-            );
-            let timer = setInterval(() => {
-                client.publish(
-                    '/dockingStation/log',
-                    JSON.stringify(dronestationMainLog())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                counter = 0;
-                alert(
-                    'MQTT Broadcasting DoneStation Maintenance Completed'
-                );
-                console.log(
-                    'MQTT Broadcasting DoneStation Maintenance Completed'
-                );
-            }, 5000);
-        };
-
-        flightButton.onclick = e => {
-            alert('MQTT Broadcasting Flight Drone Log Data');
-            console.log('MQTT Broadcasting Flight Drone Log Data');
-            let timer = setInterval(() => {
-                client.publish(
-                    '/flight/drone',
-                    JSON.stringify(FlightDroneLog())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                droneCounter = 0;
-                alert('MQTT Broadcasting Flight Drone Log Completed');
-                console.log('MQTT Broadcasting Flight Drone Log Completed');
-            }, 73000);
-        };
-
-        flightMissionButton.onclick = e => {
-            alert('MQTT Broadcasting Flight Mission Data');
-            console.log('MQTT Broadcasting Flight Mission Data');
-            let timer = setInterval(() => {
-                client.publish(
-                    '/flight/mission',
-                    JSON.stringify(flightMission())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                alert('MQTT Broadcasting Flight Mission Completed');
-                console.log('MQTT Broadcasting Flight Mission Completed');
-            }, 5000);
-        };
-
-        flightMissionLogButton.onclick = e => {
-            alert('MQTT Broadcasting Flight Mission Log Data');
-            console.log('MQTT Broadcasting Flight Mission Log Data');
-            let timer = setInterval(() => {
-                client.publish(
-                    '/flight/mission/log',
-                    JSON.stringify(flightMissionLog())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                alert('MQTT Broadcasting Flight Mission Log Completed');
-                console.log(
-                    'MQTT Broadcasting Flight Mission Log Completed'
-                );
-            }, 4000);
-        };
-
-        flightPathButton.onclick = e => {
-            alert('MQTT Broadcasting Flight Path Data');
-            console.log('MQTT Broadcasting Flight Path Data');
-            let timer = setInterval(() => {
-                client.publish(
-                    '/flight/path',
-                    JSON.stringify(flightPath())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                flightPathCount = 0;
-                alert('MQTT Broadcasting Flight Path Completed');
-                console.log('MQTT Broadcasting Flight Path Completed');
-            }, 5000);
-        };
-
-        flightPathLogButton.onclick = e => {
-            alert('MQTT Broadcasting Flight Path Log Data');
-            console.log('MQTT Broadcasting Flight Path Log Data');
-            let timer = setInterval(() => {
-                client.publish(
-                    '/flight/path/log',
-                    JSON.stringify(flightPathLog())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                flightLogCount = 0;
-                alert('MQTT Broadcasting Flight Path Log Completed');
-                console.log('MQTT Broadcasting Flight Path Log Completed');
-            }, 4000);
-        };
-
-        flightScheduleButton.onclick = e => {
-            alert('MQTT Broadcasting Flight Schedule Data');
-            console.log('MQTT Broadcasting Flight Schedule Data');
-            let timer = setInterval(() => {
-                client.publish(
-                    '/flight/schedule',
-                    JSON.stringify(flightSchedule())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                alert('MQTT Broadcasting Flight Schedule Completed');
-                console.log('MQTT Broadcasting Flight Schedule Completed');
-            }, 4000);
-        };
-
-        flightVideoButton.onclick = e => {
-            alert('MQTT Broadcasting Flight Video  Data');
-            console.log('MQTT Broadcasting Flight Video  Data');
-            let timer = setInterval(() => {
-                client.publish(
-                    '/flight/video',
-                    JSON.stringify(flightVideo())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                alert('MQTT Broadcasting Flight Video Completed');
-                console.log('MQTT Broadcasting Flight Video Completed');
-            }, 4000);
-        };
-
-        imageSensorButton.onclick = e => {
-            alert('MQTT Broadcasting Image Sensor  Data');
-            console.log('MQTT Broadcasting Image Sensor  Data');
-            let timer = setInterval(() => {
-                client.publish(
-                    '/imageSensor',
-                    JSON.stringify(imageSensor())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                alert('MQTT Broadcasting Image Sensor Completed');
-                console.log('MQTT Broadcasting Image Sensor Completed');
-            }, 4000);
-        };
-
-        imageSensorLogButton.onclick = e => {
-            alert('MQTT Broadcasting Image Sensor Maintenance Log Data');
-            console.log(
-                'MQTT Broadcasting Image Sensor Maintenance Log Data'
-            );
-            let timer = setInterval(() => {
-                client.publish(
-                    '/imageSensor/log',
-                    JSON.stringify(imageSensorMainLog())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                alert(
-                    'MQTT Broadcasting Image Sensor Log Maintenance Completed'
-                );
-                console.log(
-                    'MQTT Broadcasting Image Sensor Log Maintenance Completed'
-                );
-            }, 4000);
-        };
 
         function drone() {
             const status = [
@@ -399,7 +152,6 @@
             };
             return data;
         }
-
         function droneMainLog() {
             const status = [
                 'GOOD_CONDITION',
@@ -454,7 +206,7 @@
             ];
             const lat = [1.26726, 1.274877, 1.271749, 1.26778, 1.265999];
             const lng = [
-                103.678887,
+                103.6788867,
                 103.676365,
                 103.672082,
                 103.671106,
@@ -465,12 +217,11 @@
                 id: Number,
                 name: String,
                 description: String,
-                previousHealthStatus: String,
-                updatedHealthStatus: String,
-                eventDateTime: Number,
-                eventType: String,
-                previousNextPMDate: Number,
-                updatedNextPMDate: Number,
+                healthStatus: String,
+                droneDockedId: Number,
+                nextPMDate: Number,
+                lastCMDate: Number,
+                lastPMDate: Number,
                 lat: Number,
                 lng: Number
             };
@@ -478,18 +229,11 @@
             data.id = dronestationId[counter];
             data.name = name[counter];
             data.description = description[currentStatus];
-            data.previousHealthStatus = status[currentStatus];
-            data.updatedHealthStatus = status[currentStatus + 1];
-            (data.eventDateTime = new Date().toLocaleString('en-GB')),
-                (data.eventType = eventType[random2()]);
-            data.previousNextPMDate = randomDate(
-                new Date(2019, 0, 1),
-                new Date()
-            );
-            data.updatedNextPMDate = randomDate(
-                new Date(2019, 0, 9),
-                new Date()
-            );
+            data.droneDockedId = 1234;
+            data.healthStatus = status[random()];
+            data.lastCMDate = randomDate(new Date(2019, 0, 1), new Date());
+            data.lastPMDate = randomDate(new Date(2019, 0, 1), new Date());
+            data.nextPMDate = randomDate(new Date(2019, 0, 9), new Date());
             data.lat = lat[counter];
             data.lng = lng[counter];
 
@@ -718,7 +462,7 @@
             droneCounter++;
 
             if (droneCounter == 73) {
-                counter = 0;
+                droneCounter = 0;
             }
             return data;
         }
@@ -910,6 +654,7 @@
                 leakCount = 0;
             }
 
+
             return data;
         }
 
@@ -1000,7 +745,7 @@
             const stationId = [1, 2, 3, 4, 5, 1];
             data = {
                 details: String,
-                fromeDroneStationId: Number,
+                fromDroneStationId: Number,
                 id: Number,
                 lockEndOn: Number,
                 lockStartOn: Number,
@@ -1009,7 +754,7 @@
                 versionTimestamp: Number
             };
             data.details = 'This is a detail';
-            data.fromeDroneStationId = stationId[flightPathCount];
+            data.fromdroneStationId = stationId[flightPathCount];
             data.id = 1111;
             data.lockEndOn = new Date().toLocaleString('en-GB');
             data.lockStartOn = new Date().toLocaleString('en-GB');
@@ -1126,6 +871,8 @@
 
             return data;
         }
+       
+       
 
         function randomBoolean() {
             return (random_boolean = Math.random() >= 0.5);
@@ -1188,6 +935,110 @@
                 Math.random() * (end.getTime() - start.getTime())
             );
         }
+        leakButton.onclick = e => {
+            alert('MQTT Broadcasting LeakageInfo Log Data');
+            console.log('MQTT Broadcasting LeakageInfo Log Data');
+            let timer = setInterval(() => {
+                client.publish('/leakage', JSON.stringify(leakage()));
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                leakCount = 0;
+                alert('MQTT Broadcasting LeakageInfo Log Completed');
+                console.log('MQTT Broadcasting LeakageInfo Log Completed');
+            }, 5000);
+        };
+
+        publishFunction(leakButton,'/leakage',leakage,'Leakage ',5000)
+        publishFunction(leakLogButton,'/leakage/log',leakageLog,'Leakage Log',5000)
+
+        publishFunction(droneButton,'/drone',drone,'Drone',5000)
+
+        publishFunction(droneLogButton,'/drone/log',droneMainLog,'Drone Maintaince Log',5000)
+
+        publishFunction(dockButton,'/dockingstation',dronestation,'Docking Station',25000)
+
+        publishFunction(dockLogButton,'/dockingStation/log',dronestationMainLog,'Docking Station Maintaince Log',5000)
+
+        publishFunction(flightButton,'/flight/drone',FlightDroneLog,'Flight Drone Log',73000)
+
+        publishFunction(flightMissionButton,'/flight/mission',flightMission,'Flight Mission',5000)
+
+        publishFunction(flightMissionLogButton,'/flight/mission/log',flightMissionLog,'Flight Mission Log',4000)
+        publishFunction(flightPathButton,'/flight/path',flightPath,'Flight Path','Flight Path',5000)
+
+        publishFunction(flightPathLogButton,'/flight/path/log',flightPathLog,'Flight Path Log',4000)
+
+        publishFunction(flightScheduleButton,'/flight/schedule',flightSchedule,'Flight Schedule',4000)
+        publishFunction(flightVideoButton,'/flight/video',flightVideo,'Flight Video',4000)
+
+        publishFunction(imageSensorButton,'/imageSensor',imageSensor,'Image Sensor',4000)
+
+        publishFunction(imageSensorLogButton,'/imageSensor/log',imageSensorMainLog,'Image Sensor Maintanece Log',4000)
+
+        publishFunction(getAllDroneButton,'/drone',getAllDrone,'All Drone',4000)
+        publishFunction(getAllPathButton,'/flight/path',getAllFpath,'All Flight Path',4000)
+        publishFunction(getAllLeakButton,'/leakage',getAllleake,'All Leakage',4000)
+        publishFunction(getAllstationButton,'/dockingStation',getAllStation,'All Station',4000)
+        
+
+        function publishFunction(buttoName,topic,subscribeFunction,log,time){
+            buttoName.onclick = e =>{
+                alert('MQTT Broadcasting '+log+' Data');
+            console.log(
+                'MQTT Broadcasting '+log+' Data'
+            );
+            let timer = setInterval(() => {
+                client.publish(
+                    topic,
+                    JSON.stringify(subscribeFunction())
+                );
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+                alert(
+                    'MQTT Broadcasting '+log+' Completed'
+                );
+                console.log(
+                    'MQTT Broadcasting '+log+' Completed'
+                );
+            }, time);
+            }
+        }
+        
+
+        function getAllDrone() {
+            let tempArr = [];
+            for (let i = 0; i < 5; i++) {
+                tempArr.push(drone());
+            }
+            return tempArr;
+        }
+        function getAllleake() {
+            let tempArr = [];
+            for (let i = 0; i < 5; i++) {
+                tempArr.push(leakage());
+            }
+            return tempArr;
+        }
+        function getAllFpath() {
+            let tempArr = [];
+            for (let i = 0; i < 5; i++) {
+                tempArr.push(flightPath());
+            }
+            return tempArr;
+        }
+        function getAllStation() {
+            let tempArr = [];
+            for (let i = 0; i < 5; i++) {
+                tempArr.push(dronestation());
+            }
+            return tempArr;
+        }
+
+
     </script>
 </body>
 
