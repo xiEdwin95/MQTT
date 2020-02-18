@@ -132,6 +132,7 @@
         var getAllPathButton = document.querySelector('#allFpath');
         var getAllstationButton = document.querySelector('#allstation');
 
+        let flightPathIdCount = 0;
 
         function drone() {
             const status = [
@@ -168,7 +169,7 @@
                 description: ' THis is drone maintenace Log description',
                 eventDateTime: new Date().toLocaleString('en-GB'),
                 eventType: eventType[random2()],
-                id: random(),
+                id: flightPathIdCount + 1,
                 previousHealthStatus: status[random()],
                 previousNextPMDate: randomDate(
                     new Date(2019, 0, 10),
@@ -180,6 +181,11 @@
                     new Date()
                 )
             };
+            flightPathIdCount++
+            if (flightPathIdCount == 5) {
+                flightpathIdCount = 0;
+            }
+
             return data;
         }
 
@@ -265,7 +271,7 @@
                 dronestationId: dronestationId[random5()],
                 eventDateTime: new Date().toLocaleString('en-GB'),
                 eventType: eventType[random2()],
-                id: stationMainCount,
+                id: stationMainCount + 1,
                 previousHealthStatus: status[random()],
                 previousNextPMDate: randomDate(
                     new Date(2019, 0, 1),
@@ -448,8 +454,8 @@
                 103.678572
             ];
             data = {
-                id: 1234,
-                flightMissionId: flightMissionId,
+                id: droneCounter + 1,
+                flightMissionId: flightMissionId + 1,
                 droneStatus: droneStatus[random()],
                 gimbalPosition: gimbalPosition[random()],
                 batteryLevel: randomBattery(),
@@ -662,9 +668,14 @@
             data = {
                 description: ' This is leakage Log Description',
                 eventDateTime: new Date().toLocaleString('en-GB'),
-                id: random5(),
-                leakageinfoId: random5()
+                id: flightPathIdCount + 1,
+                leakageinfoId: flightPathIdCount + 1,
             };
+            flightPathIdCount++
+            if (flightPathIdCount == 5) {
+                flightPathIdCount = 0;
+            }
+
             return data;
         }
 
@@ -705,7 +716,7 @@
                 startStationWeather: String,
                 startOn: Number
             };
-
+            id = [1, 2, 3, 4, 5]
             data.dockedDroneAtEndStnId = 5;
             data.dockedDroneAtStartStmId = 1;
             data.droneId = 1234;
@@ -714,8 +725,8 @@
             data.endStationPowerOn = randomBoolean();
             data.endStationWeather = weather[random3()];
             endedOn = new Date().toLocaleString('en-GB');
-            data.flightPathId = 1111;
-            data.id = 1;
+            data.flightPathId = id[flightPathIdCount];
+            data.id = id[flightPathIdCount];
             data.imageSensorId = 9008;
             data.missionStatus = missionStatus[random6()];
             data.sopCheckPassed = randomBoolean();
@@ -723,17 +734,25 @@
             data.startStationPowerOn = randomBoolean();
             data.startStationWeather = weather[random3()];
             data.startOn = new Date().toLocaleString('en-GB');
-
+            flightPathIdCount++
+            if (flightPathIdCount == 5) {
+                flightPathIdCount = 0
+            }
             return data;
         }
 
         function flightMissionLog() {
+            id = [1, 2, 3, 4, 5]
             const data = {
                 description: 'This is a description',
                 eventDateTime: new Date().toLocaleString('en-GB'),
-                flightMissionId: 1111,
+                flightMissionId: id[flightPathIdCount],
                 id: 4567
             };
+            flightPathIdCount++
+            if (flightPathIdCount == 5) {
+                flightPathIdCount = 0;
+            }
             return data;
         }
 
@@ -755,7 +774,7 @@
             };
             data.details = 'This is a detail';
             data.fromdroneStationId = stationId[flightPathCount];
-            data.id = 1111;
+            data.id = id[flightPathCount];
             data.lockEndOn = new Date().toLocaleString('en-GB');
             data.lockStartOn = new Date().toLocaleString('en-GB');
             data.status = status[random2()];
@@ -765,7 +784,7 @@
             flightPathCount++;
 
             if (flightPathCount == 5) {
-                flightMission = 0;
+                flightPathCount = 0;
             }
 
             return data;
@@ -778,7 +797,7 @@
             const data = {
                 description: 'This is a description',
                 eventDateTime: new Date().toLocaleString('en-GB'),
-                flightPathId: 1111,
+                flightPathId: id[flightLogCount],
                 id: id[flightLogCount]
             };
             flightLogCount++;
@@ -790,22 +809,27 @@
         }
 
         function flightSchedule() {
+            id = [1, 2, 3, 4, 5]
             data = {
                 droneId: 1234,
                 flightDateTime: randomDate(
                     new Date(2019, 0, 1),
                     new Date()
                 ),
-                flightPathId: 1111,
+                flightPathId: id[flightPathIdCount],
                 id: random()
             };
+            flightPathIdCount++
+            if (flightPathIdCount == 5) {
+                flightPathIdCount = 0;
+            }
             return data;
         }
 
         function flightVideo() {
             data = {
                 flightMissionId: 1111,
-                id: randomlatlng(),
+                id: flightPathIdCount + 1,
                 leakageCount: 5,
                 leakageDetected: randomBoolean(),
                 payloadViewVideo: ' This is Video payload',
@@ -813,6 +837,10 @@
                 processedPayloadVideo: ' Processed Video',
                 rawPayloadVideo: ' Raw Video'
             };
+            flightPathIdCount++
+            if (flightPathIdCount == 5) {
+                flightPathIdCount = 0;
+            }
             return data;
         }
 
@@ -855,7 +883,7 @@
                 description: ' This is a description',
                 eventDateTime: new Date().toLocaleString('en-GB'),
                 eventType: eventType[random2()],
-                id: 1,
+                id: flightPathIdCount + 1,
                 imageSensorId: 9008,
                 previousHealthStatus: status[random()],
                 previousNextPMDate: randomDate(
@@ -868,11 +896,15 @@
                     new Date()
                 )
             };
+            flightPathIdCount++
+            if (flightPathIdCount == 5) {
+                flightPathIdCount = 0;
+            }
 
             return data;
         }
-       
-       
+
+
 
         function randomBoolean() {
             return (random_boolean = Math.random() >= 0.5);
@@ -935,79 +967,8 @@
                 Math.random() * (end.getTime() - start.getTime())
             );
         }
-        leakButton.onclick = e => {
-            alert('MQTT Broadcasting LeakageInfo Log Data');
-            console.log('MQTT Broadcasting LeakageInfo Log Data');
-            let timer = setInterval(() => {
-                client.publish('/leakage', JSON.stringify(leakage()));
-            }, 1000);
 
-            setTimeout(() => {
-                clearInterval(timer);
-                leakCount = 0;
-                alert('MQTT Broadcasting LeakageInfo Log Completed');
-                console.log('MQTT Broadcasting LeakageInfo Log Completed');
-            }, 5000);
-        };
 
-        publishFunction(leakButton,'/leakage',leakage,'Leakage ',5000)
-        publishFunction(leakLogButton,'/leakage/log',leakageLog,'Leakage Log',5000)
-
-        publishFunction(droneButton,'/drone',drone,'Drone',5000)
-
-        publishFunction(droneLogButton,'/drone/log',droneMainLog,'Drone Maintaince Log',5000)
-
-        publishFunction(dockButton,'/dockingstation',dronestation,'Docking Station',25000)
-
-        publishFunction(dockLogButton,'/dockingStation/log',dronestationMainLog,'Docking Station Maintaince Log',5000)
-
-        publishFunction(flightButton,'/flight/drone',FlightDroneLog,'Flight Drone Log',73000)
-
-        publishFunction(flightMissionButton,'/flight/mission',flightMission,'Flight Mission',5000)
-
-        publishFunction(flightMissionLogButton,'/flight/mission/log',flightMissionLog,'Flight Mission Log',4000)
-        publishFunction(flightPathButton,'/flight/path',flightPath,'Flight Path','Flight Path',5000)
-
-        publishFunction(flightPathLogButton,'/flight/path/log',flightPathLog,'Flight Path Log',4000)
-
-        publishFunction(flightScheduleButton,'/flight/schedule',flightSchedule,'Flight Schedule',4000)
-        publishFunction(flightVideoButton,'/flight/video',flightVideo,'Flight Video',4000)
-
-        publishFunction(imageSensorButton,'/imageSensor',imageSensor,'Image Sensor',4000)
-
-        publishFunction(imageSensorLogButton,'/imageSensor/log',imageSensorMainLog,'Image Sensor Maintanece Log',4000)
-
-        publishFunction(getAllDroneButton,'/drone',getAllDrone,'All Drone',4000)
-        publishFunction(getAllPathButton,'/flight/path',getAllFpath,'All Flight Path',4000)
-        publishFunction(getAllLeakButton,'/leakage',getAllleake,'All Leakage',4000)
-        publishFunction(getAllstationButton,'/dockingStation',getAllStation,'All Station',4000)
-        
-
-        function publishFunction(buttoName,topic,subscribeFunction,log,time){
-            buttoName.onclick = e =>{
-                alert('MQTT Broadcasting '+log+' Data');
-            console.log(
-                'MQTT Broadcasting '+log+' Data'
-            );
-            let timer = setInterval(() => {
-                client.publish(
-                    topic,
-                    JSON.stringify(subscribeFunction())
-                );
-            }, 1000);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                alert(
-                    'MQTT Broadcasting '+log+' Completed'
-                );
-                console.log(
-                    'MQTT Broadcasting '+log+' Completed'
-                );
-            }, time);
-            }
-        }
-        
 
         function getAllDrone() {
             let tempArr = [];
@@ -1037,6 +998,66 @@
             }
             return tempArr;
         }
+
+        function publishFunction(buttoName, topic, subscribeFunction, log, time) {
+            buttoName.onclick = e => {
+                alert('MQTT Broadcasting ' + log + ' Data');
+                console.log(
+                    'MQTT Broadcasting ' + log + ' Data'
+                );
+                let timer = setInterval(() => {
+                    client.publish(
+                        topic,
+                        JSON.stringify(subscribeFunction())
+                    );
+                }, 1000);
+                setTimeout(() => {
+                    clearInterval(timer);
+
+                    console.log(
+                        'MQTT Broadcasting ' + log + ' Completed'
+                    );
+                    alert(
+                        'MQTT Broadcasting ' + log + ' Completed'
+                    );
+                }, time);
+
+            }
+        }
+
+        publishFunction(leakButton, '/leakage', leakage, 'Leakage ', 5000)
+        publishFunction(leakLogButton, '/leakage/log', leakageLog, 'Leakage Log', 5000)
+
+        publishFunction(droneButton, '/drone', drone, 'Drone', 5000)
+
+        publishFunction(droneLogButton, '/drone/log', droneMainLog, 'Drone Maintaince Log', 5000)
+
+        publishFunction(dockButton, '/dockingStation', dronestation, 'Docking Station', 5000)
+
+        publishFunction(dockLogButton, '/dockingStation/log', dronestationMainLog, 'Docking Station Maintaince Log', 5000)
+
+        publishFunction(flightButton, '/flight/drone', FlightDroneLog, 'Flight Drone Log', 73000)
+
+        publishFunction(flightMissionButton, '/flight/mission', flightMission, 'Flight Mission', 5000)
+
+        publishFunction(flightMissionLogButton, '/flight/mission/log', flightMissionLog, 'Flight Mission Log', 5000)
+        publishFunction(flightPathButton, '/flight/path', flightPath, 'Flight Path', 5000)
+
+        publishFunction(flightPathLogButton, '/flight/path/log', flightPathLog, 'Flight Path Log', 5000)
+
+        publishFunction(flightScheduleButton, '/flight/schedule', flightSchedule, 'Flight Schedule', 5000)
+        publishFunction(flightVideoButton, '/flight/video', flightVideo, 'Flight Video', 5000)
+
+        publishFunction(imageSensorButton, '/imageSensor', imageSensor, 'Image Sensor', 5000)
+
+        publishFunction(imageSensorLogButton, '/imageSensor/log', imageSensorMainLog, 'Image Sensor Maintanece Log', 5000)
+
+        publishFunction(getAllDroneButton, '/drone', getAllDrone, 'All Drone', 4000)
+        publishFunction(getAllPathButton, '/flight/path', getAllFpath, 'All Flight Path', 4000)
+        publishFunction(getAllLeakButton, '/leakage', getAllleake, 'All Leakage', 4000)
+        publishFunction(getAllstationButton, '/dockingStation', getAllStation, 'All Station', 4000)
+
+
 
 
     </script>
